@@ -2,15 +2,15 @@ attraction_coordinate<-read.csv("Attraction-Coordinates.csv",head=T,sep=",")
 people_movement<-read.csv("park-movement-Sun.csv",header=T,sep=",")
 summary(attraction_coordinate)
 summary(people_movement)
+##filter the data
 entry_exit<-attraction_coordinate[attraction_coordinate$CategoryNames=="Entry-Exit",]
 summary(entry_exit)
-#people_inout<-subset(people_movement, c(people_movement$X,people_movement$Y) %in% c(c(factor(99),factor(77)),c(factor(63),factor(99)),c(factor(0),factor(67))) , select=all)
+
 people_inout<-subset(people_movement, (people_movement$X==99 & people_movement$Y==77) |(people_movement$X==63 & people_movement$Y==99) |(people_movement$X==0 & people_movement$Y==67))
 
-#people_inout<-people_inout[people_inout$type=="check-in",]
 people_inout<-people_inout[order(people_inout$id,people_inout$Timestamp),]
 
-##filter out the outliers: who have just one check-out, no movement.
+##filter out the outliers: who have just one check-out, no movement.(or just one movement)
 
 people_inout_saved<-people_inout
 people_inout_saved1<-people_inout
