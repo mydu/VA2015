@@ -32,7 +32,7 @@ people_inout<-rbind(people_inout[1:15031-1,],people_inout[15031+1:nrow(people_in
 
 
 plot(as.POSIXlt(people_inout[people_inout$type=="check-in",]$Timestamp),as.POSIXlt(people_inout[people_inout$type=="movement",]$Timestamp)
-     ,main="Enter-Exit Clusters",xlab="Leave Time",ylab="Enter Time")
+     ,main="Enter-Exit Clusters",xlab="Enter Time",ylab="Leave Time")
 
 
 
