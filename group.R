@@ -75,8 +75,7 @@ people_group<-people_group[order(people_group$move_str),]
 
 write.csv(people_group,file="people_group.csv")
 
-
-###################
+###################counting...
 
 count_group<-rep(0,nrow(people_group))
 index_group<-c(as.character(people_group$move_str)[1])
@@ -106,6 +105,39 @@ group_volume<-which(count_group == 1)
 
 people_group_finish<-data.frame(index=index_group,move_str=set_group_id)
 
+################adjust constraint
+people_group<-read.csv('people_group.csv',header = T,sep=',')
+move_str<-as.character(people_group$move_str)
+set_id<-as.character(people_group$id)
+trace<-list()
+for (i in 1:length(move_str)){
+  trace[i]<-strsplit(move_str[i],'-')
+  trace[[i]]<-trace[[i]][2:length(trace[[i]])]
+}
+
+group_adjusted<-rep(1,length(set_id))
+
+test_diff<-function(x,y,number_diff){
+  diff<-length(setdiff(x,y))+length(setdiff(y,x))
+  if (diff>4*number_diff){
+    return(1)
+  }else{
+    return(0)
+  }
+}
+
+
+num_diff<-1
+for (i in 2:length(set_id)){
+  group_adjusted <-c(group_adjusted[1:i-1], group_adjusted[i:length(set_id)] +test_diff(trace[[i]],trace[[i-1]],num_diff) )
+  
+}
+
+people_group_adjusted<-data.frame(id=set_id,move_str=move_str,group_number_adjusted=group_adjusted)
+
+group_adjusted
+
+write.csv(people_group_adjusted,file='people_group_adjusted_numdiff1.csv')
 
 
 
